@@ -2,7 +2,7 @@
     <form action="">
 
         <textarea 
-             placeholder="Enter message"
+            placeholder="Enter message"
             v-model="message"
             @keypress.enter="handleSubmit"
         ></textarea>
