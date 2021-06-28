@@ -2,7 +2,7 @@
     <form action="">
 
         <textarea 
-            name="" id=""  placeholder="Enter message"
+             placeholder="Enter message"
             v-model="message"
             @keypress.enter="handleSubmit"
         ></textarea>
@@ -15,19 +15,24 @@
 import { ref } from '@vue/reactivity'
 import getUser from '../composables/getUser';
 import {timestamp} from "../firebase/config"
+import useCollection from "../composables/useCollection"
 export default {
     setup(){
         let message=ref("");
         let {user}=getUser();
+        let {error,addDoc}=useCollection("message");
 
-        let handleSubmit=()=>{
+        let handleSubmit=async()=>{
 
             let chat={
                 message:message.value,
                 name:user.value.displayName,
                 created_at:timestamp()
             }
-            console.log(chat);
+            // console.log(chat);
+
+            let res=await addDoc(chat);
+            
             message.value="";
 
         }
@@ -37,7 +42,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
       form {
         margin: 10px;
         display: flex;
@@ -55,7 +60,7 @@ export default {
         font-family: inherit;
         outline: none;
       }
-      .send{
-          
+      .send:hover{
+        cursor: pointer;
       }
 </style>
